@@ -1,0 +1,48 @@
+<odoo>
+  <data>
+  <record id="customer_code_view_partner_form" model="ir.ui.view">
+          <field name="name">customer_code_view_partner_form</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="base.view_partner_form"/>
+          <field name="arch" type="xml">
+
+              <xpath expr="//field[@name='vat']" position="after">
+                  <field name="birth_date"/>
+              </xpath>
+              <xpath expr="//field[@name='type']" position="before">
+                  <field name="is_student"/>
+              </xpath>
+          </field>
+      </record>
+      <record id="student_view_res_partner_filter" model="ir.ui.view">
+          <field name="name">student_view_res_partner_filter</field>
+          <field name="model">res.partner</field>
+          <field name="inherit_id" ref="base.view_res_partner_filter"/>
+          <field name="arch" type="xml">
+    
+              <xpath expr="//field[@name='user_id']" position="after">
+
+                  <filter string="Is Student" name="is_student" domain="[('is_student', '=', True)]"/>
+                  <separator/>
+              </xpath>
+      
+             
+
+          </field>
+      </record>
+      <record id="student_inv_view" model="ir.ui.view">
+            <field name="name">student.inv.view</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form"/>
+            <field name="arch" type="xml">
+
+                <xpath expr="//field[@name='journal_id']" position="after">
+                   <field name="registration_id"/>
+
+                </xpath>
+
+            </field>
+        </record>
+
+  </data>
+</odoo>

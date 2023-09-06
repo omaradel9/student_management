@@ -1,0 +1,106 @@
+<odoo>
+  <data>
+    <!-- explicit list view definition -->
+    <record id="seq_student_registration" model="ir.sequence">
+                <field name="name">Student Registration Sequence</field>
+                <field name="code">rsr.sequence</field>
+                <field name="prefix">SR</field>
+                <field name="padding">5</field>
+                <field name="company_id" eval="False"/>
+    </record>
+    <record model="ir.ui.view" id="student_registration_list">
+      <field name="name">student.registration.list</field>
+      <field name="model">student.registration</field>
+      <field name="arch" type="xml">
+        <tree>
+            <field name="name"/>
+            <field name="student_id"/>
+            <field name="phone"/>
+            <field name="age"/>
+            <field name="date"/>
+            <field name="currency_id"/>
+            <field name="amount"/>
+        </tree>
+      </field>
+    </record>
+    <record model="ir.ui.view" id="student_registration_form">
+      <field name="name">student.registration.form</field>
+      <field name="model">student.registration</field>
+      <field name="arch" type="xml">
+        <form>
+        <header>
+          <button name="confirm" string="Confirm" class="oe_highlight" type="object" attrs="{'invisible': [('state','!=', 'draft')]}"/>
+          <button name="create_invoice" string="Create Invoice" class="oe_highlight" type="object" attrs="{'invisible': ['|',('is_invoiced', '=', True),('state', '!=', 'confirm')]}"/>
+          <button name="cancel" string="Cancel" class="oe_highlight" type="object" attrs="{'invisible': [('state', 'in', ('draft','canceled'))]}"/>
+          <field name="state" widget="statusbar"/>
+        </header>
+        <sheet>
+         <div class="oe_button_box" name="button_box">
+          <button name="invoice_action" type="object" icon="fa-pencil-square-o"  class="oe_stat_button" string="Invoices"
+                                        attrs="{'invisible': [('is_invoiced', '=', False)]}"/>
+        </div>
+        <group>
+            <group>
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="phone"/>
+                <field name="age"/>
+                <field name="is_invoiced" invisible="1"/>
+
+
+
+            </group>
+            <group>
+                <field name="date"/>
+                <field name="currency_id"/>
+                <field name="amount"/>
+
+
+            </group>
+        </group>
+        </sheet>
+
+        </form>
+      </field>
+    </record>
+    <record id="action_student_view" model="ir.actions.act_window">
+            <field name="name">Students</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="search_view_id" ref="base.view_res_partner_filter"/>
+            <field name="domain">[('is_student', '=', True)]</field>
+            <field name="context">{'default_is_student': True}</field>
+            <field name="help" type="html">
+              <p class="o_view_nocontent_smiling_face">
+                Hello
+              </p>
+            </field>
+        </record>
+
+
+    <record model="ir.actions.act_window" id="student_registration_action_window">
+      <field name="name">Student Registration</field>
+      <field name="res_model">student.registration</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+
+    <!-- Top menu item -->
+
+    <menuitem name="Registration" id="registration_menu_root"/>
+
+    <!-- menu categories -->
+
+    <menuitem name="Student Registration" id="registration" action="student_registration_action_window" groups="group_registration_manager" parent="registration_menu_root"/>
+    <menuitem name="Student" id="student" action="action_student_view" parent="registration_menu_root"/>
+
+    <!-- actions -->
+<!--
+    <menuitem name="List" id="student_management.menu_1_list" parent="student_management.menu_1"
+              action="student_management.action_window"/>
+    <menuitem name="Server to list" id="student_management" parent="student_management.menu_2"
+              action="student_management.action_server"/>
+-->
+  </data>
+</odoo>
